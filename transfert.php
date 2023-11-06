@@ -91,7 +91,9 @@ foreach ($worksheet->getRowIterator() as $row) {
 
         $id_shop=1;
         $id_lang=1;
+
         insertIntoEquipements($conn);
+
         $parkingextid=searchNom($conn,'Parking extérieur');
         $garage_boxid = searchNom($conn,'Garage/Box');
         $caveid = searchNom($conn,'Cave');
@@ -118,7 +120,7 @@ foreach ($worksheet->getRowIterator() as $row) {
         $couchagesId = searchNom($conn,'Couchages');
 
         $product_id = insertIntoProduct($conn, $id_shop, $prix, $prix_loc, $reference, $active, $type_transaction,$type_bien);
-       
+        insertIntoProduitLang($conn,$product_id,$id_shop,$id_lang,$description);
             if($parking_ext==1){
                 InsertEquipementsProduct($conn,$product_id,$parkingextid);
             }
@@ -225,18 +227,44 @@ foreach ($worksheet->getRowIterator() as $row) {
             if($couchages==1){
                 InsertEquipementsProduct($conn,$product_id,$couchagesId);
             }
-            
+           
+    insertIntoService($conn,$product_id,$tarif_option_menage);
     insertIntoAdresse($conn,$product_id,$adresse, $ville, $code_postal);
     insertIntoFeature($conn,$product_id,$reference,$mandat,$pieces,$surface,$surface_balcon,$surface_loggia,$surface_terrasse,$surface_terrain,$nb_couchages,$annee_construction);
-    insertIntoProduitLang($conn,$product_id,$id_shop,$id_lang,$description);
+
+ }
+
+ function insertIntoService($conn,$product_id,$tarif_option_menage){
+    $serviceName = "Tarif option ménage";
+    $stmt = $conn->prepare("SELECT * FROM ps_prestaimmo_service WHERE title = ?");
+    $stmt->bind_param("s", $serviceName);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $row = $result->fetch_assoc();
+    $idService = $row['id_service'];
+    var_dump($idService);
+
+    $stmt = $conn->prepare("INSERT INTO ps_prestaimmo_product_service(id_product,id_service,price) VALUES (?,?,?)");
+    $stmt->bind_param("iii",$product_id,$idService,$tarif_option_menage);
+     if ($stmt->execute()) {
+        echo "Record inserted successfully<br>";
+    } else {
+        echo "Error inserting SERVICE: " . $stmt->error;
+        return -1;
+    }
+
  }
 
 function insertIntoAdresse($conn, $product_id, $adresse, $ville, $code_postal) {
     $stmt = $conn->prepare("INSERT INTO ps_prestaimmo_address (id_product, address, city, postal_code) VALUES (?, ?, ?, ?)");
     $stmt->bind_param("isss", $product_id, $adresse, $ville, $code_postal);
-    
+
     if ($stmt->execute()) {
+        $stmt2 = $conn->prepare("INSERT INTO ps_ps_prestaimmo_location VALUES (?)");
+        $stmt2->bind_param("i", $product_id,);
+        if( $stmt2->execute() ) {
         echo "Record inserted successfully<br>";
+        }
     } else {
         echo "Error inserting address: " . $stmt->error;
         return -1;
