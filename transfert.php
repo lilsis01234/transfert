@@ -18,7 +18,7 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-$xlsxFile = 'bdd/wp_mod_immo (8).csv'; 
+$xlsxFile = 'bdd/wp_mod_immo (1).csv'; 
 $spreadsheet = IOFactory::load($xlsxFile);
 $worksheet = $spreadsheet->getActiveSheet();
 
@@ -49,7 +49,6 @@ foreach ($worksheet->getRowIterator() as $row) {
         $accroche = isset($data[19]) ? $data[19] : '';
         $photoacceuil = isset($data[20]) ? $data[20] : '';
         $mode_location =  isset($data[21]) ? $data[21] : '';
-        $parking_ext =  isset($data[22]) ? $data[22] : '';
         $garage_box = isset($data[23]) ? $data[23] : '';
         $cave = isset($data[24]) ? $data[24] : '';
         $chauffage_gaz =  isset($data[25]) ? $data[25] : '';
@@ -88,20 +87,166 @@ foreach ($worksheet->getRowIterator() as $row) {
         $immovision_data = isset($data[66]) ? $data[66] : '';
         $boost =isset($data[67]) ? $data[67] : '';
         $tarif_option_menage = isset($data[68]) ? $data[68] : '';
+        $parking_ext =  isset($data[22]) ? $data[22] : '';
 
         $id_shop=1;
         $id_lang=1;
         insertIntoEquipements($conn);
-        // $product_id = insertIntoProduct($conn, $id_shop, $prix, $prix_loc, $reference, $active, $type_transaction,$type_bien);
-        // insertIntoAdresse($conn,$product_id,$adresse, $ville, $code_postal);
-        // insertIntoFeature($conn,$product_id,$reference,$mandat,$pieces,$surface,$surface_balcon,$surface_loggia,$surface_terrasse,$surface_terrain,$nb_couchages,$annee_construction);
-        // insertIntoProduitLang($conn,$product_id,$id_shop,$id_lang,$description);
-    }
+        $parkingextid=searchNom($conn,'Parking extérieur');
+        $garage_boxid = searchNom($conn,'Garage/Box');
+        $caveid = searchNom($conn,'Cave');
+        $chauffage_gazid=searchNom($conn,'Chauffage au gaz');
+        $chauffage_elecId = searchNom($conn,'Chauffage électrique');
+        $cuisine_equipeeid = searchNom($conn,'Cuisine équipée');        
+        $balconid=searchNom($conn,'Balcon');
+        $loggiaid = searchNom($conn,'Loggia');
+        $piscineid = searchNom($conn,'Piscine');        
+        $ascenseurid=searchNom($conn,'Ascenseur');
+        $gardienid = searchNom($conn,'Gardien');
+        $accessecuriseId = searchNom($conn,'Accès sécurisés');        
+        $jacuzziId=searchNom($conn,'Jacuzzi');
+        $salle_de_jeuxId = searchNom($conn,'Salle de jeux');
+        $equipement_enfantId = searchNom($conn,'Equipement enfant');        
+        $internetId=searchNom($conn,'Internet');
+        $televisionId = searchNom($conn,'Télévision');
+        $cable_satelliteId = searchNom($conn,'Câble/Satellite');        
+        $lecteur_dvdId=searchNom($conn,'Lecteur DVD');
+        $console_de_jeuxId = searchNom($conn,'Console de jeux');
+        $lave_lingeId = searchNom($conn,'Lave linge');        
+        $seche_lingeId=searchNom($conn,'Sèche linge');
+        $lave_vaisselleId = searchNom($conn,'Lave vaisselle');
+        $couchagesId = searchNom($conn,'Couchages');
+
+        $product_id = insertIntoProduct($conn, $id_shop, $prix, $prix_loc, $reference, $active, $type_transaction,$type_bien);
+       
+            if($parking_ext==1){
+                InsertEquipementsProduct($conn,$product_id,$parkingextid);
+            }
+
+            if($garage_box==1){
+                InsertEquipementsProduct($conn,$product_id,$garage_boxid);
+            }
+        
+            if($cave==1){
+                InsertEquipementsProduct($conn,$product_id,$caveid);
+            }
+           
+            if($chauffage_gaz==1){
+                InsertEquipementsProduct($conn,$product_id,$chauffage_gazid);
+            }
+            
+            if($chauffage_elec==1){
+                InsertEquipementsProduct($conn,$product_id,$chauffage_elecId);
+            }
+         
+            if($cuisine_equipee==1){
+                InsertEquipementsProduct($conn,$product_id,$cuisine_equipeeid);
+            }
+                      
+            if($balcon==1){
+                InsertEquipementsProduct($conn,$product_id,$balconid);
+            }
+                      
+            if($loggia==1){
+                InsertEquipementsProduct($conn,$product_id,$loggiaid);
+            }
+                       
+            if($piscine==1){
+                InsertEquipementsProduct($conn,$product_id,$piscineid);
+            }
+                        
+            if($ascenseur==1){
+                InsertEquipementsProduct($conn,$product_id,$ascenseurid);
+            }         
+            
+            if($gardien==1){
+                InsertEquipementsProduct($conn,$product_id,$gardienid);
+            }
+                  
+            
+            if($acces_securises==1){
+                InsertEquipementsProduct($conn,$product_id,$accessecuriseId);
+            }
+                       
+            
+            if($jacuzzi==1){
+                InsertEquipementsProduct($conn,$product_id,$jacuzziId);
+            }
+                       
+            
+            if($salle_de_jeux==1){
+                InsertEquipementsProduct($conn,$product_id,$salle_de_jeuxId);
+            }
+                       
+            
+            if($equipement_enfant==1){
+                InsertEquipementsProduct($conn,$product_id,$equipement_enfantId);
+            }
+                       
+            
+            if($internet==1){
+                InsertEquipementsProduct($conn,$product_id,$internetId);
+            }
+                       
+            
+            if($television==1){
+                InsertEquipementsProduct($conn,$product_id,$televisionId);
+            }
+                       
+            
+            if($cable_satellite==1){
+                InsertEquipementsProduct($conn,$product_id,$cable_satelliteId);
+            }
+                      
+            
+            if($lecteur_dvd==1){
+                InsertEquipementsProduct($conn,$product_id,$lecteur_dvdId);
+            }
+                      
+            
+            if($console_de_jeux==1){
+                InsertEquipementsProduct($conn,$product_id,$console_de_jeuxId);
+            }
+                      
+            
+            if($lave_linge==1){
+                InsertEquipementsProduct($conn,$product_id,$lave_lingeId);
+            }          
+            
+            if($seche_linge==1){
+                InsertEquipementsProduct($conn,$product_id,$seche_lingeId);
+            }
+                       
+            
+            if($lave_vaisselle==1){
+                InsertEquipementsProduct($conn,$product_id,$lave_vaisselleId);
+            }
+
+            if($couchages==1){
+                InsertEquipementsProduct($conn,$product_id,$couchagesId);
+            }
+            
+    insertIntoAdresse($conn,$product_id,$adresse, $ville, $code_postal);
+    insertIntoFeature($conn,$product_id,$reference,$mandat,$pieces,$surface,$surface_balcon,$surface_loggia,$surface_terrasse,$surface_terrain,$nb_couchages,$annee_construction);
+    insertIntoProduitLang($conn,$product_id,$id_shop,$id_lang,$description);
+ }
 
 function insertIntoAdresse($conn, $product_id, $adresse, $ville, $code_postal) {
     $stmt = $conn->prepare("INSERT INTO ps_prestaimmo_address (id_product, address, city, postal_code) VALUES (?, ?, ?, ?)");
     $stmt->bind_param("isss", $product_id, $adresse, $ville, $code_postal);
     
+    if ($stmt->execute()) {
+        echo "Record inserted successfully<br>";
+    } else {
+        echo "Error inserting address: " . $stmt->error;
+        return -1;
+    }
+
+    $stmt->close();
+}
+function InsertEquipementsProduct($conn,$idProduit,$idEquipement){
+    $stmt = $conn->prepare("INSERT INTO ps_prestaimmo_product_equipement (id_product,id_equipement) VALUES (?,?)");
+    $stmt->bind_param("ii", $idProduit,$idEquipement);
     if ($stmt->execute()) {
         echo "Record inserted successfully<br>";
     } else {
@@ -154,6 +299,21 @@ function insertIntoEquipements($conn) {
     $stmt->close();}
 }
 
+function searchNom($conn,$nom){
+    $stmt = $conn->prepare("SELECT * FROM ps_prestaimmo_equipment WHERE title = ?");
+    $stmt->bind_param("s", $nom);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows>0) {
+        $row = $result->fetch_assoc();
+        var_dump($row['id_equipment']);
+        return $row['id_equipment'];
+    } else {
+        return null;
+    }
+}
+
 function insertIntoProduitLang($conn,$product_id,$id_shop,$id_lang,$description) {
     $sql = "INSERT INTO ps_product_lang (id_product,id_shop,id_lang,description) VALUES ('$product_id','$id_shop','$id_lang','$description')";
     if ($conn->query($sql) === TRUE) {
@@ -189,18 +349,18 @@ function insertIntoFeature($conn, $product_id, $reference, $mandat, $pieces, $su
 function insertIntoProduct($conn, $id_shop, $prix, $prix_loc, $reference, $active, $type_transaction, $type_bien) {
     //voir l'id du categorie par le type de transaction
     $id_category = getCategoryid($conn, $type_transaction);
-    var_dump($id_category);
+    // var_dump($id_category);
 
     //voir l'id du sous-categorie par le type du bien
     $id_sous_categories = getCategoryid($conn, $type_bien);
-    var_dump($id_sous_categories);
+    // var_dump($id_sous_categories);
 
     if ($id_sous_categories !== null && $id_category !== null) {
         foreach($id_category as $id_pp){
         foreach ($id_sous_categories as $id_ss) {
             $id_sous_category = getProductCategoryId($conn, $id_ss, $id_pp);
             if ($id_sous_category !== null) {
-                var_dump($id_sous_category);
+                // var_dump($id_sous_category);
                 $inserted = insertProductIntoDatabase($conn, $id_shop, $id_sous_category, $prix, $prix_loc, $reference, $active);
                 if ($inserted !== null) {
                     echo "Record inserted successfully<br>";
