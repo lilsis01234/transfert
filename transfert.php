@@ -1,9 +1,9 @@
 <?php
 // Database connection parameters
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "prestashop804";
+$servername = "192.168.16.244";
+$username = "ddroot";
+$password = "123456";
+$dbname = "prestashop_804";
 
 require 'vendor/autoload.php';  // Include PhpSpreadsheet autoloader
 
@@ -235,7 +235,7 @@ foreach ($worksheet->getRowIterator() as $row) {
  }
 
  function insertIntoService($conn,$product_id,$tarif_option_menage){
-    $serviceName = "Tarif option ménage";
+    $serviceName = "option ménage";
     $stmt = $conn->prepare("SELECT * FROM ps_prestaimmo_service WHERE title = ?");
     $stmt->bind_param("s", $serviceName);
     $stmt->execute();
