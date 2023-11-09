@@ -1,11 +1,11 @@
 <?php
 // Database connection parameters
-$servername = "192.168.16.244";
-$username = "ddroot";
-$password = "123456";
-$dbname = "prestashop_804";
+$servername = "";
+$username = "";
+$password = "";
+$dbname = "";
 
-require 'vendor/autoload.php';  // Include PhpSpreadsheet autoloader
+require 'vendor/autoload.php'; 
 
 use PhpOffice\PhpSpreadsheet\IOFactory;
 
@@ -17,6 +17,9 @@ $conn->set_charset("utf8");
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
+
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
 $xlsxFile = 'bdd/wp_mod_immo (1).csv'; 
 $spreadsheet = IOFactory::load($xlsxFile);
@@ -41,7 +44,7 @@ foreach ($worksheet->getRowIterator() as $row) {
         $surface = isset($data[11]) ? $data[11] : '';
         $prix = isset($data[12]) ? $data[12] : '';
         $prix_loc = isset($data[13]) ? $data[13] : '';
-        $description = isset($data[14]) ? str_replace("'", "\'", $data[14]) : '';
+        $description = isset($data[14]) ? str_replace("'", "'", $data[14]) : '';
         $publication = isset($data[15]) ? $data[15] : '';
         $maj = isset($data[16]) ? $data[16] : '';
         $active = isset($data[17]) ? $data[17] : '';
@@ -92,14 +95,14 @@ foreach ($worksheet->getRowIterator() as $row) {
         $id_shop=1;
         $id_lang=1;
 
-        insertIntoEquipements($conn);
+        // insertIntoEquipements($conn);
 
         $parkingextid=searchNom($conn,'Parking extérieur');
         $garage_boxid = searchNom($conn,'Garage/Box');
         $caveid = searchNom($conn,'Cave');
         $chauffage_gazid=searchNom($conn,'Chauffage au gaz');
-        $chauffage_elecId = searchNom($conn,'Chauffage électrique');
-        $cuisine_equipeeid = searchNom($conn,'Cuisine équipée');        
+        $chauffage_elecId = searchNom($conn,'Chauffageélectrique');
+        $cuisine_equipeeid = searchNom($conn,'Cuisineéquipée');        
         $balconid=searchNom($conn,'Balcon');
         $loggiaid = searchNom($conn,'Loggia');
         $piscineid = searchNom($conn,'Piscine');        
@@ -119,8 +122,16 @@ foreach ($worksheet->getRowIterator() as $row) {
         $lave_vaisselleId = searchNom($conn,'Lave vaisselle');
         $couchagesId = searchNom($conn,'Couchages');
 
-        $product_id = insertIntoProduct($conn, $id_shop, $prix, $prix_loc, $reference, $active, $type_transaction,$type_bien);
-        insertIntoProduitLang($conn,$product_id,$id_shop,$id_lang,$description);
+        $link_rewrite1 = $reference." ".$type_bien." ".$surface;
+        $link_rewrite = str_replace(" ","-",$link_rewrite1);
+        
+        $name = $reference.",".$type_bien.",".$surface."m²";
+
+        $date_add = date('Y-m-d');
+
+        $product_id = insertIntoProduct($conn, $id_shop, $prix, $prix_loc, $reference, $active, $type_transaction,$type_bien,$date_add);
+        
+        insertIntoProduitLang($conn,$product_id,$id_shop,$id_lang,$description,$link_rewrite,$name);
             if($parking_ext==1){
                 InsertEquipementsProduct($conn,$product_id,$parkingextid);
             }
@@ -235,50 +246,50 @@ foreach ($worksheet->getRowIterator() as $row) {
  }
 
  function insertIntoService($conn,$product_id,$tarif_option_menage){
-    $serviceName = "option ménage";
-    $stmt = $conn->prepare("SELECT * FROM ps_prestaimmo_service WHERE title = ?");
+    $serviceName = "Ménage";
+    $stmt = $conn->prepare("SELECT * FROM sb8_prestaimmo_service WHERE title = ?");
     $stmt->bind_param("s", $serviceName);
     $stmt->execute();
     $result = $stmt->get_result();
     $row = $result->fetch_assoc();
     $idService = $row['id_service'];
-    var_dump($idService);
+    // var_dump($idService);
 
-    $stmt = $conn->prepare("INSERT INTO ps_prestaimmo_product_service(id_product,id_service,price) VALUES (?,?,?)");
+    $stmt = $conn->prepare("INSERT INTO sb8_prestaimmo_product_service(id_product,id_service,price) VALUES (?,?,?)");
     $stmt->bind_param("iii",$product_id,$idService,$tarif_option_menage);
      if ($stmt->execute()) {
         echo "Record inserted successfully<br>";
     } else {
-        echo "Error inserting SERVICE: " . $stmt->error;
+        echo "Error inserting SERVICE: " . $stmt->error ."<br>";
         return -1;
     }
 
  }
 
 function insertIntoAdresse($conn, $product_id, $adresse, $ville, $code_postal) {
-    $stmt = $conn->prepare("INSERT INTO ps_prestaimmo_address (id_product, address, city, postal_code) VALUES (?, ?, ?, ?)");
+    $stmt = $conn->prepare("INSERT INTO sb8_prestaimmo_address (id_product, address, city, postal_code) VALUES (?, ?, ?, ?)");
     $stmt->bind_param("isss", $product_id, $adresse, $ville, $code_postal);
 
     if ($stmt->execute()) {
-        $stmt2 = $conn->prepare("INSERT INTO ps_ps_prestaimmo_location VALUES (?)");
-        $stmt2->bind_param("i", $product_id,);
+        $stmt2 = $conn->prepare("INSERT INTO sb8_prestaimmo_location(id_product) VALUES (?)");
+        $stmt2->bind_param("i", $product_id);
         if( $stmt2->execute() ) {
         echo "Record inserted successfully<br>";
         }
     } else {
-        echo "Error inserting address: " . $stmt->error;
+        echo "Error inserting address: " . $stmt->error."<br>";
         return -1;
     }
 
     $stmt->close();
 }
 function InsertEquipementsProduct($conn,$idProduit,$idEquipement){
-    $stmt = $conn->prepare("INSERT INTO ps_prestaimmo_product_equipement (id_product,id_equipement) VALUES (?,?)");
+    $stmt = $conn->prepare("INSERT INTO sb8_prestaimmo_product_equipement (id_product,id_equipement) VALUES (?,?)");
     $stmt->bind_param("ii", $idProduit,$idEquipement);
     if ($stmt->execute()) {
         echo "Record inserted successfully<br>";
     } else {
-        echo "Error inserting address: " . $stmt->error;
+        echo "Error inserting address: " . $stmt->error."<br>";
         return -1;
     }
 
@@ -291,8 +302,8 @@ function insertIntoEquipements($conn) {
                  'Garage/Box',
                  'Cave',
                  'Chauffage au gaz',
-                 'Chauffage électrique',
-                 'Cuisine équipée',
+                 'Chauffageélectrique',
+                 'Cuisineéquipée',
                  'Balcon',
                  'Loggia',
                  'Piscine',
@@ -314,13 +325,13 @@ function insertIntoEquipements($conn) {
     ];
 
     foreach ($equipments as $equipment){
-    $sql = "INSERT INTO ps_prestaimmo_equipment (title,label) VALUES (?,?)";
+    $sql = "INSERT INTO sb8_prestaimmo_equipment (title,label) VALUES (?,?)";
     $stmt= $conn->prepare($sql);
     $stmt->bind_param("ss", $equipment,$equipment);
     if ($stmt->execute()) {
         echo "Record inserted successfully<br>";
     } else {
-        echo "Error inserting address: " . $stmt->error;
+        echo "Error inserting address: " . $stmt->error."<br>";
         return -1;
     }
 
@@ -328,26 +339,28 @@ function insertIntoEquipements($conn) {
 }
 
 function searchNom($conn,$nom){
-    $stmt = $conn->prepare("SELECT * FROM ps_prestaimmo_equipment WHERE title = ?");
+    $stmt = $conn->prepare("SELECT * FROM sb8_prestaimmo_equipment WHERE title = ?");
     $stmt->bind_param("s", $nom);
     $stmt->execute();
     $result = $stmt->get_result();
 
     if ($result->num_rows>0) {
         $row = $result->fetch_assoc();
-        var_dump($row['id_equipment']);
+        // var_dump($row['id_equipment']);
         return $row['id_equipment'];
     } else {
         return null;
     }
 }
 
-function insertIntoProduitLang($conn,$product_id,$id_shop,$id_lang,$description) {
-    $sql = "INSERT INTO ps_product_lang (id_product,id_shop,id_lang,description) VALUES ('$product_id','$id_shop','$id_lang','$description')";
-    if ($conn->query($sql) === TRUE) {
+function insertIntoProduitLang($conn,$product_id,$id_shop,$id_lang,$description,$link_rewrite,$name) {
+    
+    $sql =$conn->prepare("INSERT INTO sb8_product_lang (id_product,id_shop,id_lang,description,link_rewrite,name) VALUES (?,?,?,?,?,?)");
+    $sql->bind_param("iiisss",$product_id,$id_shop,$id_lang,$description,$link_rewrite,$name);
+    if ($sql->execute()) {
         echo "Record inserted successfully<br>";
     } else {
-        echo "Error inserting address: " . $conn->error;
+        echo "Error inserting product_lang: " . $conn->error."<br>";
         return -1;
     }
 }
@@ -364,17 +377,19 @@ function insertIntoFeature($conn, $product_id, $reference, $mandat, $pieces, $su
     $nb_couchages = !empty($nb_couchages) ? $nb_couchages : 0;
     $annee_construction = !empty($annee_construction) ? $annee_construction : 0;
 
-    $sql = "INSERT INTO ps_prestaimmo_feature (id_product, reference_immo, mandate, number_of_rooms, area, balcony_area, loggia_area, terrace_area, land_area, number_sleeping, year_built) VALUES ('$product_id', '$reference', '$mandat', '$pieces', '$surface', '$surface_balcon', '$surface_loggia', '$surface_terrasse', '$surface_terrain', '$nb_couchages', '$annee_construction')";
-    if ($conn->query($sql) === TRUE) {
+    $sql = $conn->prepare( "INSERT INTO sb8_prestaimmo_feature (id_product, reference_immo, mandate, number_of_rooms, area, balcony_area, loggia_area, terrace_area, land_area, number_sleeping, year_built) VALUES (?,?,?,?,?,?,?,?,?,?,?)");
+    $sql->bind_param("issiiiiiiis",$product_id, $reference, $mandat, $pieces, $surface, $surface_balcon, $surface_loggia, $surface_terrasse, $surface_terrain, $nb_couchages, $annee_construction);
+    
+    if ($sql->execute()) {
         echo "Record inserted successfully<br>";
     } else {
-        echo "Error inserting feature: " . $conn->error;
+        echo "Error inserting feature: " . $conn->error."<br>";
         return -1;
     }
 }
 
 
-function insertIntoProduct($conn, $id_shop, $prix, $prix_loc, $reference, $active, $type_transaction, $type_bien) {
+function insertIntoProduct($conn, $id_shop, $prix, $prix_loc, $reference, $active, $type_transaction, $type_bien,$date_add) {
     //voir l'id du categorie par le type de transaction
     $id_category = getCategoryid($conn, $type_transaction);
     // var_dump($id_category);
@@ -389,7 +404,7 @@ function insertIntoProduct($conn, $id_shop, $prix, $prix_loc, $reference, $activ
             $id_sous_category = getProductCategoryId($conn, $id_ss, $id_pp);
             if ($id_sous_category !== null) {
                 // var_dump($id_sous_category);
-                $inserted = insertProductIntoDatabase($conn, $id_shop, $id_sous_category, $prix, $prix_loc, $reference, $active);
+                $inserted = insertProductIntoDatabase($conn, $id_shop, $id_sous_category, $prix, $prix_loc, $reference, $active,$date_add);
                 if ($inserted !== null) {
                     echo "Record inserted successfully<br>";
                     return $inserted;
@@ -399,7 +414,7 @@ function insertIntoProduct($conn, $id_shop, $prix, $prix_loc, $reference, $activ
     }
     else{
         $id_sous_category=null;
-        $inserted = insertProductIntoDatabase($conn, $id_shop, $id_sous_category, $prix, $prix_loc, $reference, $active);
+        $inserted = insertProductIntoDatabase($conn, $id_shop, $id_sous_category, $prix, $prix_loc, $reference, $active,$date_add);
                 if ($inserted !== null) {
                     echo "Record inserted successfully<br>";
                     return $inserted;
@@ -409,25 +424,43 @@ function insertIntoProduct($conn, $id_shop, $prix, $prix_loc, $reference, $activ
 }
 
 
-function insertProductIntoDatabase($conn, $id_shop, $id_sous_category, $prix, $prix_loc, $reference, $active) {
-    $sql = "INSERT INTO ps_product (id_shop_default, id_category_default, price, unit_price, reference, active) VALUES (?, ?, ?, ?, ?, ?)";
+function insertProductIntoDatabase($conn, $id_shop, $id_sous_category, $prix, $prix_loc, $reference, $active,$date_add) {
+    $id_tax_rules_group = 1;
+    $sql = "INSERT INTO sb8_product (id_shop_default, id_category_default,id_tax_rules_group, price, unit_price, reference, active,date_add,date_upd) VALUES (?, ?,?, ?, ?, ?, ?,?,?)";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("iiidss", $id_shop, $id_sous_category, $prix, $prix_loc, $reference, $active);
+    $stmt->bind_param("iiiddsiss", $id_shop, $id_sous_category,$id_tax_rules_group, $prix, $prix_loc, $reference, $active,$date_add,$date_add);
 
     if ($stmt->execute()) {
-        return $conn->insert_id;
-    } else {
-        echo "Error inserting product: " . $stmt->error . "<br>";
-    }
+        $product_id = $conn->insert_id;
+        
+        $stmt2 = $conn->prepare("INSERT INTO sb8_product_shop (id_product,id_shop, id_category_default,id_tax_rules_group, price, unit_price, active,date_add,date_upd) VALUES (?, ?, ?, ?, ?, ?,?,?,?)");
+        $stmt2->bind_param("iiiddiiss",$product_id, $id_shop, $id_sous_category,$id_tax_rules_group, $prix, $prix_loc, $active,$date_add,$date_add);
+    
+        if($stmt2->execute()){
+         echo "sb8_product_shop inséré <br>";
+         $stmt3 = $conn->prepare("INSERT INTO sb8_category_product(id_category,id_product) VALUES (?,?)");
+         $stmt3->bind_param("ii", $id_sous_category,$product_id);
 
-    $stmt->close();
-    return null;
+         if($stmt3->execute()){
+            echo "sb8_category_product bien inséré <br>";
+         }
+        } else {
+            echo "Error inserting product into sb8_product_shop: " . $stmt2->error . "<br>";
+        }
+        
+        return $product_id;
+    } else {
+        echo "Error inserting product into sb8_product: " . $stmt->error . "<br>";
+        $stmt->close();
+        return null;
+    }
+    
 }
 
 
 //fonction pour obtenir l'id du categorie et des sous-categories
 function getCategoryid($conn, $categoryName) {
-    $stmt = $conn->prepare("SELECT * FROM ps_category_lang WHERE name = ?");
+    $stmt = $conn->prepare("SELECT * FROM sb8_category_lang WHERE name = ?");
     $stmt->bind_param("s", $categoryName);
     $stmt->execute();
     $result = $stmt->get_result();
@@ -445,7 +478,7 @@ function getCategoryid($conn, $categoryName) {
 
 //fonction pour voir lequel des 3 sous-categories est au categorie parent
 function getProductCategoryId($conn, $id_sous_category, $id_category) {
-    $stmt = $conn->prepare("SELECT * FROM ps_category WHERE id_category = ? AND id_parent = ?");
+    $stmt = $conn->prepare("SELECT * FROM sb8_category WHERE id_category = ? AND id_parent = ?");
     $stmt->bind_param("ii", $id_sous_category, $id_category);
     $stmt->execute();
     $result = $stmt->get_result();

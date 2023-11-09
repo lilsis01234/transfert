@@ -1,0 +1,1 @@
+SET description = REPLACE(description, "&Eacute;", "É") i learned today 
