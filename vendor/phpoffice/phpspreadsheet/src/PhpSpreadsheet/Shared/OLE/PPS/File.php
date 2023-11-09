@@ -39,11 +39,11 @@ class File extends PPS
      */
     public function __construct($name)
     {
-        parent::__construct(null, $name, OLE::OLE_PPS_TYPE_FILE, null, null, null, null, null, '', []);
+        parent::__construct(null, $name, OLE::OLE_Psb8_TYPE_FILE, null, null, null, null, null, '', []);
     }
 
     /**
-     * Initialization method. Has to be called right after OLE_PPS_File().
+     * Initialization method. Has to be called right after OLE_Psb8_File().
      *
      * @return mixed true on success
      */
