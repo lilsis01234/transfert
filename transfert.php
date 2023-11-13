@@ -1,9 +1,9 @@
 <?php
 // Database connection parameters
-$servername = "";
+$servername = "localhost";
 $username = "";
 $password = "";
-$dbname = "";
+$dbname = "-";
 
 require 'vendor/autoload.php'; 
 
@@ -21,230 +21,281 @@ if ($conn->connect_error) {
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-$xlsxFile = 'bdd/wp_mod_immo (1).csv'; 
-$spreadsheet = IOFactory::load($xlsxFile);
-$worksheet = $spreadsheet->getActiveSheet();
+//  $xlsxFile = 'bdd/wp_mod_immo (7).csv'; 
+$xlsxFile2 = 'bdd/wp_mod_immo_photos (1).csv';
+// $spreadsheet = IOFactory::load($xlsxFile);
+$spreadsheet2 = IOFactory::load($xlsxFile2);
 
-foreach ($worksheet->getRowIterator() as $row) {
-    $data = [];
-    foreach ($row->getCellIterator() as $cell) {
-        $data[] = $cell->getValue();
+// $worksheet = $spreadsheet->getActiveSheet();
+$worksheet2 = $spreadsheet2->getActiveSheet();
+
+// foreach ($worksheet->getRowIterator() as $row) {
+    foreach ($worksheet2->getRowIterator() as $row2) {
+    $data2 = [];
+    // $data = [];
+    // foreach ($row->getCellIterator() as $cell) {
+    //     $data[] = $cell->getValue();
+    // }
+
+    foreach ($row2->getCellIterator() as $cell2) {
+        $data2[] = $cell2->getValue();	
     }
+        $id_anle_sary = isset( $data2[0] ) ? $data2[0] :'';
+        $id_produit_manana_anle_sary = isset( $data2[1] ) ? $data2[1] :'';
+        $filename = isset( $data2[2] ) ? $data2[2] :'';
+        $extension = isset( $data2[3] ) ? $data2[3] :'';
+        $url = isset( $data2[4] ) ? $data2[4] :'';
 
-        $id_page = isset($data[1]) ? $data[1] : '';
-        $id_section = isset($data[2]) ? $data[2] : '';
-        $reference = isset($data[3]) ? htmlspecialchars($data[3]) : '';
-        $mandat = isset($data[4]) ? htmlspecialchars($data[4], ENT_QUOTES, 'UTF-8') : '';
-        $type_transaction =  isset($data[5]) ? $data[5] : '';
-        $type_bien =  isset($data[6]) ? htmlspecialchars($data[6]) : '';
-        $adresse = isset($data[7]) ? mb_convert_encoding($data[7], 'UTF-8', 'UTF-8') : ''; 
-        $ville = isset($data[8]) ? mb_convert_encoding($data[8], 'UTF-8', 'UTF-8') : ''; 
-        $code_postal = isset($data[9]) ? mb_convert_encoding($data[9], 'UTF-8', 'UTF-8') : '';
-        $pieces =  isset($data[10]) ? $data[10] : '';
-        $surface = isset($data[11]) ? $data[11] : '';
-        $prix = isset($data[12]) ? $data[12] : '';
-        $prix_loc = isset($data[13]) ? $data[13] : '';
-        $description = isset($data[14]) ? str_replace("'", "'", $data[14]) : '';
-        $publication = isset($data[15]) ? $data[15] : '';
-        $maj = isset($data[16]) ? $data[16] : '';
-        $active = isset($data[17]) ? $data[17] : '';
-        $featured = isset($data[18]) ? $data[18] : '';
-        $accroche = isset($data[19]) ? $data[19] : '';
-        $photoacceuil = isset($data[20]) ? $data[20] : '';
-        $mode_location =  isset($data[21]) ? $data[21] : '';
-        $garage_box = isset($data[23]) ? $data[23] : '';
-        $cave = isset($data[24]) ? $data[24] : '';
-        $chauffage_gaz =  isset($data[25]) ? $data[25] : '';
-        $chauffage_elec =  isset($data[26]) ? $data[26] : '';
-        $cuisine_equipee = isset($data[27]) ? $data[27] : '';
-        $balcon = isset($data[28]) ? $data[28] : '';
-        $surface_balcon = isset($data[29]) ? $data[29] : '';
-        $loggia = isset($data[30]) ? $data[30] : '';
-        $surface_loggia =  isset($data[31]) ? $data[31] : '';
-        $terrasse =  isset($data[32]) ? $data[32] : '';
-        $surface_terrasse =  isset($data[33]) ? $data[33] : '';
-        $terrain =  isset($data[34]) ? $data[34] : '';
-        $surface_terrain =  isset($data[35]) ? $data[35] : '';
-        $piscine = isset($data[36]) ? $data[36] : '';
-        $ascenseur =  isset($data[37]) ? $data[37] : '';
-        $gardien = isset($data[38]) ? $data[38] : '';
-        $acces_securises = isset($data[39]) ? $data[39] : '';
-        $jacuzzi =  isset($data[40]) ? $data[40] : '';
-        $salle_de_jeux =isset($data[41]) ? $data[41] : '';
-        $equipement_enfant = isset($data[42]) ? $data[42] : '';
-        $internet = isset($data[43]) ? $data[43] : '';
-        $television = isset($data[44]) ? $data[44] : '';
-        $cable_satellite =isset($data[45]) ? $data[45] : '';
-        $lecteur_dvd =isset($data[46]) ? $data[46] : '';
-        $console_de_jeux = isset($data[47]) ? $data[47] : '';
-        $lave_linge = isset($data[48]) ? $data[48] : '';
-        $seche_linge = isset($data[49]) ? $data[49] : '';
-        $lave_vaisselle = isset($data[50]) ? $data[50] : '';
-        $annee_construction = isset($data[51]) ? $data[51] : '';
-        $couchages = isset($data[52]) ? $data[52] : '';
-        $nb_couchages = isset($data[53]) ? $data[53] : '';
-        $etq_energie = isset($data[54]) ? $data[54] : '';
-        $etq_climat = isset($data[55]) ? $data[55] : '';
-        // $crm_prix_net_vendeur = isset($data[56]) ? $data[56] : '';
-        $immovision =isset($data[65]) ? $data[65] : '';
-        $immovision_data = isset($data[66]) ? $data[66] : '';
-        $boost =isset($data[67]) ? $data[67] : '';
-        $tarif_option_menage = isset($data[68]) ? $data[68] : '';
-        $parking_ext =  isset($data[22]) ? $data[22] : '';
+    //     $id_anle_produit = isset($data[0])? $data[0] : '';
+    //     $id_page = isset($data[1]) ? $data[1] : '';
+    //     $id_section = isset($data[2]) ? $data[2] : '';
+    //     $reference = isset($data[3]) ? htmlspecialchars($data[3]) : '';
+    //     $mandat = isset($data[4]) ? htmlspecialchars($data[4], ENT_QUOTES, 'UTF-8') : '';
+    //     $type_transaction =  isset($data[5]) ? $data[5] : '';
+    //     $type_bien =  isset($data[6]) ? htmlspecialchars($data[6]) : '';
+    //     $adresse = isset($data[7]) ? mb_convert_encoding($data[7], 'UTF-8', 'UTF-8') : ''; 
+    //     $ville = isset($data[8]) ? mb_convert_encoding($data[8], 'UTF-8', 'UTF-8') : ''; 
+    //     $code_postal = isset($data[9]) ? mb_convert_encoding($data[9], 'UTF-8', 'UTF-8') : '';
+    //     $pieces =  isset($data[10]) ? $data[10] : '';
+    //     $surface = isset($data[11]) ? $data[11] : '';
+    //     $prix = isset($data[12]) ? $data[12] : '';
+    //     $prix_loc = isset($data[13]) ? $data[13] : '';
+    //     $description = isset($data[14]) ? str_replace("'", "'", $data[14]) : '';
+    //     $publication = isset($data[15]) ? $data[15] : '';
+    //     $maj = isset($data[16]) ? $data[16] : '';
+    //     $active = isset($data[17]) ? $data[17] : '';
+    //     $featured = isset($data[18]) ? $data[18] : '';
+    //     $accroche = isset($data[19]) ? $data[19] : '';
+    //     $photoacceuil = isset($data[20]) ? $data[20] : '';
+    //     $mode_location =  isset($data[21]) ? $data[21] : '';
+    //     $garage_box = isset($data[23]) ? $data[23] : '';
+    //     $cave = isset($data[24]) ? $data[24] : '';
+    //     $chauffage_gaz =  isset($data[25]) ? $data[25] : '';
+    //     $chauffage_elec =  isset($data[26]) ? $data[26] : '';
+    //     $cuisine_equipee = isset($data[27]) ? $data[27] : '';
+    //     $balcon = isset($data[28]) ? $data[28] : '';
+    //     $surface_balcon = isset($data[29]) ? $data[29] : '';
+    //     $loggia = isset($data[30]) ? $data[30] : '';
+    //     $surface_loggia =  isset($data[31]) ? $data[31] : '';
+    //     $terrasse =  isset($data[32]) ? $data[32] : '';
+    //     $surface_terrasse =  isset($data[33]) ? $data[33] : '';
+    //     $terrain =  isset($data[34]) ? $data[34] : '';
+    //     $surface_terrain =  isset($data[35]) ? $data[35] : '';
+    //     $piscine = isset($data[36]) ? $data[36] : '';
+    //     $ascenseur =  isset($data[37]) ? $data[37] : '';
+    //     $gardien = isset($data[38]) ? $data[38] : '';
+    //     $acces_securises = isset($data[39]) ? $data[39] : '';
+    //     $jacuzzi =  isset($data[40]) ? $data[40] : '';
+    //     $salle_de_jeux =isset($data[41]) ? $data[41] : '';
+    //     $equipement_enfant = isset($data[42]) ? $data[42] : '';
+    //     $internet = isset($data[43]) ? $data[43] : '';
+    //     $television = isset($data[44]) ? $data[44] : '';
+    //     $cable_satellite =isset($data[45]) ? $data[45] : '';
+    //     $lecteur_dvd =isset($data[46]) ? $data[46] : '';
+    //     $console_de_jeux = isset($data[47]) ? $data[47] : '';
+    //     $lave_linge = isset($data[48]) ? $data[48] : '';
+    //     $seche_linge = isset($data[49]) ? $data[49] : '';
+    //     $lave_vaisselle = isset($data[50]) ? $data[50] : '';
+    //     $annee_construction = isset($data[51]) ? $data[51] : '';
+    //     $couchages = isset($data[52]) ? $data[52] : '';
+    //     $nb_couchages = isset($data[53]) ? $data[53] : '';
+    //     $etq_energie = isset($data[54]) ? $data[54] : '';
+    //     $etq_climat = isset($data[55]) ? $data[55] : '';
+    //     // $crm_prix_net_vendeur = isset($data[56]) ? $data[56] : '';
+    //     $immovision =isset($data[65]) ? $data[65] : '';
+    //     $immovision_data = isset($data[66]) ? $data[66] : '';
+    //     $boost =isset($data[67]) ? $data[67] : '';
+    //     $tarif_option_menage = isset($data[68]) ? $data[68] : '';
+    //     $parking_ext =  isset($data[22]) ? $data[22] : '';
 
-        $id_shop=1;
-        $id_lang=1;
+    //     $id_shop=1;
+    //     $id_lang=1;
 
-        // insertIntoEquipements($conn);
 
-        $parkingextid=searchNom($conn,'Parking extérieur');
-        $garage_boxid = searchNom($conn,'Garage/Box');
-        $caveid = searchNom($conn,'Cave');
-        $chauffage_gazid=searchNom($conn,'Chauffage au gaz');
-        $chauffage_elecId = searchNom($conn,'Chauffageélectrique');
-        $cuisine_equipeeid = searchNom($conn,'Cuisineéquipée');        
-        $balconid=searchNom($conn,'Balcon');
-        $loggiaid = searchNom($conn,'Loggia');
-        $piscineid = searchNom($conn,'Piscine');        
-        $ascenseurid=searchNom($conn,'Ascenseur');
-        $gardienid = searchNom($conn,'Gardien');
-        $accessecuriseId = searchNom($conn,'Accès sécurisés');        
-        $jacuzziId=searchNom($conn,'Jacuzzi');
-        $salle_de_jeuxId = searchNom($conn,'Salle de jeux');
-        $equipement_enfantId = searchNom($conn,'Equipement enfant');        
-        $internetId=searchNom($conn,'Internet');
-        $televisionId = searchNom($conn,'Télévision');
-        $cable_satelliteId = searchNom($conn,'Câble/Satellite');        
-        $lecteur_dvdId=searchNom($conn,'Lecteur DVD');
-        $console_de_jeuxId = searchNom($conn,'Console de jeux');
-        $lave_lingeId = searchNom($conn,'Lave linge');        
-        $seche_lingeId=searchNom($conn,'Sèche linge');
-        $lave_vaisselleId = searchNom($conn,'Lave vaisselle');
-        $couchagesId = searchNom($conn,'Couchages');
+    //     $parkingextid=searchNom($conn,'Parking extérieur');
+    //     $garage_boxid = searchNom($conn,'Garage/Box');
+    //     $caveid = searchNom($conn,'Cave');
+    //     $chauffage_gazid=searchNom($conn,'Chauffage au gaz');
+    //     $chauffage_elecId = searchNom($conn,'Chauffage électrique');
+    //     $cuisine_equipeeid = searchNom($conn,'Cuisine équipée');        
+    //     $balconid=searchNom($conn,'Balcon');
+    //     $loggiaid = searchNom($conn,'Loggia');
+    //     $piscineid = searchNom($conn,'Piscine');        
+    //     $ascenseurid=searchNom($conn,'Ascenseur');
+    //     $gardienid = searchNom($conn,'Gardien');
+    //     $accessecuriseId = searchNom($conn,'Accès sécurisés');        
+    //     $jacuzziId=searchNom($conn,'Jacuzzi');
+    //     $salle_de_jeuxId = searchNom($conn,'Salle de jeux'); 
+    //     $equipement_enfantId = searchNom($conn,'Equipement enfant');        
+    //     $internetId=searchNom($conn,'Internet');
+    //     $televisionId = searchNom($conn,'Télévision');
+    //     $cable_satelliteId = searchNom($conn,'Câble/Satellite');        
+    //     $lecteur_dvdId=searchNom($conn,'Lecteur DVD');
+    //     $console_de_jeuxId = searchNom($conn,'Console de jeux');
+    //     $lave_lingeId = searchNom($conn,'Lave linge');        
+    //     $seche_lingeId=searchNom($conn,'Sèche linge');
+    //     $lave_vaisselleId = searchNom($conn,'Lave vaisselle');
+    //     $couchagesId = searchNom($conn,'Couchages');
 
-        $link_rewrite1 = $reference." ".$type_bien." ".$surface;
-        $link_rewrite = str_replace(" ","-",$link_rewrite1);
+    //     $link_rewrite1 = $reference." ".$type_bien." ".$surface;
+    //     $link_rewrite = str_replace(" ","-",$link_rewrite1);
         
-        $name = $reference.",".$type_bien.",".$surface."m²";
+    //     $name = $reference.",".$type_bien.",".$surface."m²";
 
-        $date_add = date('Y-m-d');
+    //     $date_add = date('Y-m-d');
 
-        $product_id = insertIntoProduct($conn, $id_shop, $prix, $prix_loc, $reference, $active, $type_transaction,$type_bien,$date_add);
+
+
+    //     $product_id = insertIntoProduct($id_anle_produit,$conn, $id_shop, $prix, $prix_loc, $reference, $active, $type_transaction,$type_bien,$date_add);
+    //     var_dump($product_id);
+        $photo = $id_anle_sary;
+        insertIntoProductImage($id_anle_sary,$conn,$id_produit_manana_anle_sary);
+
+    //     insertIntoProduitLang($conn,$product_id,$id_shop,$id_lang,$description,$link_rewrite,$name);
+            
+    //     if($parking_ext==1){
+    //             InsertEquipementsProduct($conn,$product_id,$parkingextid);
+    //         }
+
+    //         if($garage_box==1){
+    //             InsertEquipementsProduct($conn,$product_id,$garage_boxid);
+    //         }
         
-        insertIntoProduitLang($conn,$product_id,$id_shop,$id_lang,$description,$link_rewrite,$name);
-            if($parking_ext==1){
-                InsertEquipementsProduct($conn,$product_id,$parkingextid);
-            }
-
-            if($garage_box==1){
-                InsertEquipementsProduct($conn,$product_id,$garage_boxid);
-            }
-        
-            if($cave==1){
-                InsertEquipementsProduct($conn,$product_id,$caveid);
-            }
+    //         if($cave==1){
+    //             InsertEquipementsProduct($conn,$product_id,$caveid);
+    //         }
            
-            if($chauffage_gaz==1){
-                InsertEquipementsProduct($conn,$product_id,$chauffage_gazid);
-            }
+    //         if($chauffage_gaz==1){
+    //             InsertEquipementsProduct($conn,$product_id,$chauffage_gazid);
+    //         }
             
-            if($chauffage_elec==1){
-                InsertEquipementsProduct($conn,$product_id,$chauffage_elecId);
-            }
+    //         if($chauffage_elec==1){
+    //             InsertEquipementsProduct($conn,$product_id,$chauffage_elecId);
+    //         }
          
-            if($cuisine_equipee==1){
-                InsertEquipementsProduct($conn,$product_id,$cuisine_equipeeid);
-            }
+    //         if($cuisine_equipee==1){
+    //             InsertEquipementsProduct($conn,$product_id,$cuisine_equipeeid);
+    //         }
                       
-            if($balcon==1){
-                InsertEquipementsProduct($conn,$product_id,$balconid);
-            }
+    //         if($balcon==1){
+    //             InsertEquipementsProduct($conn,$product_id,$balconid);
+    //         }
                       
-            if($loggia==1){
-                InsertEquipementsProduct($conn,$product_id,$loggiaid);
-            }
+    //         if($loggia==1){
+    //             InsertEquipementsProduct($conn,$product_id,$loggiaid);
+    //         }
                        
-            if($piscine==1){
-                InsertEquipementsProduct($conn,$product_id,$piscineid);
-            }
+    //         if($piscine==1){
+    //             InsertEquipementsProduct($conn,$product_id,$piscineid);
+    //         }
                         
-            if($ascenseur==1){
-                InsertEquipementsProduct($conn,$product_id,$ascenseurid);
-            }         
+    //         if($ascenseur==1){
+    //             InsertEquipementsProduct($conn,$product_id,$ascenseurid);
+    //         }         
             
-            if($gardien==1){
-                InsertEquipementsProduct($conn,$product_id,$gardienid);
-            }
+    //         if($gardien==1){
+    //             InsertEquipementsProduct($conn,$product_id,$gardienid);
+    //         }
                   
             
-            if($acces_securises==1){
-                InsertEquipementsProduct($conn,$product_id,$accessecuriseId);
-            }
+    //         if($acces_securises==1){
+    //             InsertEquipementsProduct($conn,$product_id,$accessecuriseId);
+    //         }
                        
             
-            if($jacuzzi==1){
-                InsertEquipementsProduct($conn,$product_id,$jacuzziId);
-            }
+    //         if($jacuzzi==1){
+    //             InsertEquipementsProduct($conn,$product_id,$jacuzziId);
+    //         }
                        
             
-            if($salle_de_jeux==1){
-                InsertEquipementsProduct($conn,$product_id,$salle_de_jeuxId);
-            }
+    //         if($salle_de_jeux==1){
+    //             InsertEquipementsProduct($conn,$product_id,$salle_de_jeuxId);
+    //         }
                        
             
-            if($equipement_enfant==1){
-                InsertEquipementsProduct($conn,$product_id,$equipement_enfantId);
-            }
+    //         if($equipement_enfant==1){
+    //             InsertEquipementsProduct($conn,$product_id,$equipement_enfantId);
+    //         }
                        
             
-            if($internet==1){
-                InsertEquipementsProduct($conn,$product_id,$internetId);
-            }
+    //         if($internet==1){
+    //             InsertEquipementsProduct($conn,$product_id,$internetId);
+    //         }
                        
             
-            if($television==1){
-                InsertEquipementsProduct($conn,$product_id,$televisionId);
-            }
+    //         if($television==1){
+    //             InsertEquipementsProduct($conn,$product_id,$televisionId);
+    //         }
                        
             
-            if($cable_satellite==1){
-                InsertEquipementsProduct($conn,$product_id,$cable_satelliteId);
-            }
+    //         if($cable_satellite==1){
+    //             InsertEquipementsProduct($conn,$product_id,$cable_satelliteId);
+    //         }
                       
             
-            if($lecteur_dvd==1){
-                InsertEquipementsProduct($conn,$product_id,$lecteur_dvdId);
-            }
+    //         if($lecteur_dvd==1){
+    //             InsertEquipementsProduct($conn,$product_id,$lecteur_dvdId);
+    //         }
                       
             
-            if($console_de_jeux==1){
-                InsertEquipementsProduct($conn,$product_id,$console_de_jeuxId);
-            }
+    //         if($console_de_jeux==1){
+    //             InsertEquipementsProduct($conn,$product_id,$console_de_jeuxId);
+    //         }
                       
             
-            if($lave_linge==1){
-                InsertEquipementsProduct($conn,$product_id,$lave_lingeId);
-            }          
+    //         if($lave_linge==1){
+    //             InsertEquipementsProduct($conn,$product_id,$lave_lingeId);
+    //         }          
             
-            if($seche_linge==1){
-                InsertEquipementsProduct($conn,$product_id,$seche_lingeId);
-            }
+    //         if($seche_linge==1){
+    //             InsertEquipementsProduct($conn,$product_id,$seche_lingeId);
+    //         }
                        
             
-            if($lave_vaisselle==1){
-                InsertEquipementsProduct($conn,$product_id,$lave_vaisselleId);
-            }
+    //         if($lave_vaisselle==1){
+    //             InsertEquipementsProduct($conn,$product_id,$lave_vaisselleId);
+    //         }
 
-            if($couchages==1){
-                InsertEquipementsProduct($conn,$product_id,$couchagesId);
-            }
+    //         if($couchages==1){
+    //             InsertEquipementsProduct($conn,$product_id,$couchagesId);
+    //         }
            
-    insertIntoService($conn,$product_id,$tarif_option_menage);
-    insertIntoAdresse($conn,$product_id,$adresse, $ville, $code_postal);
-    insertIntoFeature($conn,$product_id,$reference,$mandat,$pieces,$surface,$surface_balcon,$surface_loggia,$surface_terrasse,$surface_terrain,$nb_couchages,$annee_construction);
+    // insertIntoService($conn,$product_id,$tarif_option_menage);
+    // insertIntoAdresse($conn,$product_id,$adresse, $ville, $code_postal);
+    // insertIntoFeature($conn,$product_id,$reference,$mandat,$pieces,$surface,$surface_balcon,$surface_loggia,$surface_terrasse,$surface_terrain,$nb_couchages,$annee_construction);
 
- }
+        
+}
 
+// insertIntoEquipements($conn);
+
+function insertIntoProductImage($photo_id,$conn,$product_id){
+    $stmt = $conn->prepare("SELECT * FROM sb8_product_lang WHERE id_product = ?");
+    $stmt->bind_param("i",$product_id);
+    $stmt->execute();
+    $mbola_tsy_legend = $stmt->get_result();
+    if($mbola_tsy_legend ->num_rows > 0){
+        while($mbola_tsy_legend2 = $mbola_tsy_legend->fetch_assoc()){
+        $legend = $mbola_tsy_legend2['name'];}
+        var_dump($legend);
+    }
+    // A insérer dans les tables sb8_image,sb8_image_lang,sb8_image_shop
+    $stmt2 = $conn->prepare("INSERT INTO sb8_image (id_image,id_product) VALUES (?,?)");
+    $stmt2->bind_param("ii",$photo_id,$product_id);
+    if($stmt2->execute()){
+        echo "sary tafiditra tsara<br>";
+        $id_lang = 1;
+        $stmt3 = $conn->prepare("INSERT INTO sb8_image_lang (id_image,id_lang,legend) VALUES (?,?,?)");
+        $stmt3->bind_param("iis",$photo_id,$id_lang,$legend);
+        if($stmt3->execute()){
+            echo "sary tafiditra tsara<br>";
+            $id_shop = 1;
+            $stmt4 = $conn->prepare("INSERT INTO sb8_image_shop (id_product,id_image,id_shop) VALUES(?,?,?)");
+            $stmt4->bind_param("iii",$photo_id,$product_id,$id_shop);
+        }
+    }
+
+}
  function insertIntoService($conn,$product_id,$tarif_option_menage){
     $serviceName = "Ménage";
     $stmt = $conn->prepare("SELECT * FROM sb8_prestaimmo_service WHERE title = ?");
@@ -283,13 +334,14 @@ function insertIntoAdresse($conn, $product_id, $adresse, $ville, $code_postal) {
 
     $stmt->close();
 }
+
 function InsertEquipementsProduct($conn,$idProduit,$idEquipement){
     $stmt = $conn->prepare("INSERT INTO sb8_prestaimmo_product_equipement (id_product,id_equipement) VALUES (?,?)");
     $stmt->bind_param("ii", $idProduit,$idEquipement);
     if ($stmt->execute()) {
         echo "Record inserted successfully<br>";
     } else {
-        echo "Error inserting address: " . $stmt->error."<br>";
+        echo "Error inserting PRODUCT_EQUIPMENT: " . $stmt->error."<br>";
         return -1;
     }
 
@@ -302,8 +354,8 @@ function insertIntoEquipements($conn) {
                  'Garage/Box',
                  'Cave',
                  'Chauffage au gaz',
-                 'Chauffageélectrique',
-                 'Cuisineéquipée',
+                 'Chauffage électrique',
+                 'Cuisine équipée',
                  'Balcon',
                  'Loggia',
                  'Piscine',
@@ -331,7 +383,7 @@ function insertIntoEquipements($conn) {
     if ($stmt->execute()) {
         echo "Record inserted successfully<br>";
     } else {
-        echo "Error inserting address: " . $stmt->error."<br>";
+        echo "Error inserting EQUIPMENT: " . $stmt->error."<br>";
         return -1;
     }
 
@@ -389,7 +441,7 @@ function insertIntoFeature($conn, $product_id, $reference, $mandat, $pieces, $su
 }
 
 
-function insertIntoProduct($conn, $id_shop, $prix, $prix_loc, $reference, $active, $type_transaction, $type_bien,$date_add) {
+function insertIntoProduct($id_anle_produit,$conn, $id_shop, $prix, $prix_loc, $reference, $active, $type_transaction, $type_bien,$date_add) {
     //voir l'id du categorie par le type de transaction
     $id_category = getCategoryid($conn, $type_transaction);
     // var_dump($id_category);
@@ -404,7 +456,7 @@ function insertIntoProduct($conn, $id_shop, $prix, $prix_loc, $reference, $activ
             $id_sous_category = getProductCategoryId($conn, $id_ss, $id_pp);
             if ($id_sous_category !== null) {
                 // var_dump($id_sous_category);
-                $inserted = insertProductIntoDatabase($conn, $id_shop, $id_sous_category, $prix, $prix_loc, $reference, $active,$date_add);
+                $inserted = insertProductIntoDatabase($id_anle_produit,$conn, $id_shop, $id_sous_category, $prix, $prix_loc, $reference, $active,$date_add);
                 if ($inserted !== null) {
                     echo "Record inserted successfully<br>";
                     return $inserted;
@@ -414,7 +466,7 @@ function insertIntoProduct($conn, $id_shop, $prix, $prix_loc, $reference, $activ
     }
     else{
         $id_sous_category=null;
-        $inserted = insertProductIntoDatabase($conn, $id_shop, $id_sous_category, $prix, $prix_loc, $reference, $active,$date_add);
+        $inserted = insertProductIntoDatabase($id_anle_produit,$conn, $id_shop, $id_sous_category, $prix, $prix_loc, $reference, $active,$date_add);
                 if ($inserted !== null) {
                     echo "Record inserted successfully<br>";
                     return $inserted;
@@ -424,37 +476,29 @@ function insertIntoProduct($conn, $id_shop, $prix, $prix_loc, $reference, $activ
 }
 
 
-function insertProductIntoDatabase($conn, $id_shop, $id_sous_category, $prix, $prix_loc, $reference, $active,$date_add) {
+function insertProductIntoDatabase($id_anle_produit,$conn, $id_shop, $id_sous_category, $prix, $prix_loc, $reference, $active,$date_add) {
     $id_tax_rules_group = 1;
-    $sql = "INSERT INTO sb8_product (id_shop_default, id_category_default,id_tax_rules_group, price, unit_price, reference, active,date_add,date_upd) VALUES (?, ?,?, ?, ?, ?, ?,?,?)";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("iiiddsiss", $id_shop, $id_sous_category,$id_tax_rules_group, $prix, $prix_loc, $reference, $active,$date_add,$date_add);
+    $stmt = $conn->prepare("INSERT INTO sb8_product (id_product,id_shop_default, id_category_default,id_tax_rules_group, price, unit_price, reference, active,date_add,date_upd) VALUES (?,?, ?,?, ?, ?, ?, ?,?,?)");
+    $stmt->bind_param("iiiiddsiss",$id_anle_produit, $id_shop, $id_sous_category,$id_tax_rules_group, $prix, $prix_loc, $reference, $active,$date_add,$date_add);
 
     if ($stmt->execute()) {
         $product_id = $conn->insert_id;
-        
+    }    
         $stmt2 = $conn->prepare("INSERT INTO sb8_product_shop (id_product,id_shop, id_category_default,id_tax_rules_group, price, unit_price, active,date_add,date_upd) VALUES (?, ?, ?, ?, ?, ?,?,?,?)");
         $stmt2->bind_param("iiiddiiss",$product_id, $id_shop, $id_sous_category,$id_tax_rules_group, $prix, $prix_loc, $active,$date_add,$date_add);
     
         if($stmt2->execute()){
          echo "sb8_product_shop inséré <br>";
+        }
+
          $stmt3 = $conn->prepare("INSERT INTO sb8_category_product(id_category,id_product) VALUES (?,?)");
          $stmt3->bind_param("ii", $id_sous_category,$product_id);
 
          if($stmt3->execute()){
             echo "sb8_category_product bien inséré <br>";
          }
-        } else {
-            echo "Error inserting product into sb8_product_shop: " . $stmt2->error . "<br>";
-        }
         
         return $product_id;
-    } else {
-        echo "Error inserting product into sb8_product: " . $stmt->error . "<br>";
-        $stmt->close();
-        return null;
-    }
-    
 }
 
 
