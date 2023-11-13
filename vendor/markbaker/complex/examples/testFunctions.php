@@ -39,7 +39,7 @@ $functions = array(
 for ($real = -3.5; $real <= 3.5; $real += 0.5) {
     for ($imaginary = -3.5; $imaginary <= 3.5; $imaginary += 0.5) {
         foreach ($functions as $function) {
-            $complexFunction = __NAMESPACE__ . '' . $function;
+            $complexFunction = __NAMESPACE__ . '\\' . $function;
             $complex = new Complex($real, $imaginary);
             try {
                 echo $function, '(', $complex, ') = ', $complexFunction($complex), PHP_EOL;

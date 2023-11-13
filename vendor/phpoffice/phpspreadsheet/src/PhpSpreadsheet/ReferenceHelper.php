@@ -10,10 +10,10 @@ class ReferenceHelper
 {
     /**    Constants                */
     /**    Regular Expressions      */
-    const REFHELPER_REGEXP_CELLREF = '((\w*|'[^!]*')!)?(?<![:a-z\$])(\$?[a-z]{1,3}\$?\d+)(?=[^:!\d'])';
-    const REFHELPER_REGEXP_CELLRANGE = '((\w*|'[^!]*')!)?(\$?[a-z]{1,3}\$?\d+):(\$?[a-z]{1,3}\$?\d+)';
-    const REFHELPER_REGEXP_ROWRANGE = '((\w*|'[^!]*')!)?(\$?\d+):(\$?\d+)';
-    const REFHELPER_REGEXP_COLRANGE = '((\w*|'[^!]*')!)?(\$?[a-z]{1,3}):(\$?[a-z]{1,3})';
+    const REFHELPER_REGEXP_CELLREF = '((\w*|\'[^!]*\')!)?(?<![:a-z\$])(\$?[a-z]{1,3}\$?\d+)(?=[^:!\d\'])';
+    const REFHELPER_REGEXP_CELLRANGE = '((\w*|\'[^!]*\')!)?(\$?[a-z]{1,3}\$?\d+):(\$?[a-z]{1,3}\$?\d+)';
+    const REFHELPER_REGEXP_ROWRANGE = '((\w*|\'[^!]*\')!)?(\$?\d+):(\$?\d+)';
+    const REFHELPER_REGEXP_COLRANGE = '((\w*|\'[^!]*\')!)?(\$?[a-z]{1,3}):(\$?[a-z]{1,3})';
 
     /**
      * Instance of this class.
@@ -744,7 +744,7 @@ class ReferenceHelper
                         ksort($cellTokens);
                         ksort($newCellTokens);
                     }   //  Update cell references in the formula
-                    $formulaBlock = str_replace('', '', preg_replace($cellTokens, $newCellTokens, $formulaBlock));
+                    $formulaBlock = str_replace('\\', '', preg_replace($cellTokens, $newCellTokens, $formulaBlock));
                 }
             }
         }

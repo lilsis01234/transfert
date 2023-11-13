@@ -765,7 +765,7 @@ class Html extends BaseReader
                     break;
 
                 case 'font-family':
-                    $cellStyle->getFont()->setName(str_replace(''', '', $styleValue));
+                    $cellStyle->getFont()->setName(str_replace('\'', '', $styleValue));
 
                     break;
 

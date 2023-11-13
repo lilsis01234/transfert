@@ -37,13 +37,13 @@ class Parser
     //         *:/\?[]
     // Moreover, there are valid sheet title characters that cannot occur in unquoted form (there may be more?)
     // +-% '^&<>=,;#()"{}
-    const REGEX_SHEET_TITLE_UNQUOTED = '[^\*\:\/\\\\\?\[\]\+\-\% '\^\&\<\>\=\,\;\#\(\)\"\{\}]+';
+    const REGEX_SHEET_TITLE_UNQUOTED = '[^\*\:\/\\\\\?\[\]\+\-\% \\\'\^\&\<\>\=\,\;\#\(\)\"\{\}]+';
 
     // Sheet title in quoted form (without surrounding quotes)
     // Invalid sheet title characters cannot occur in the sheet title:
     // *:/\?[]                    (usual invalid sheet title characters)
     // Single quote is represented as a pair ''
-    const REGEX_SHEET_TITLE_QUOTED = '(([^\*\:\/\\\\\?\[\]'])+|('')+)+';
+    const REGEX_SHEET_TITLE_QUOTED = '(([^\*\:\/\\\\\?\[\]\\\'])+|(\\\'\\\')+)+';
 
     /**
      * The index of the character we are currently looking at.
@@ -752,7 +752,7 @@ class Parser
     {
         $ext_ref = preg_replace("/^'/", '', $ext_ref); // Remove leading  ' if any.
         $ext_ref = preg_replace("/'$/", '', $ext_ref); // Remove trailing ' if any.
-        $ext_ref = str_replace('''', ''', $ext_ref); // Replace escaped '' with '
+        $ext_ref = str_replace('\'\'', '\'', $ext_ref); // Replace escaped '' with '
 
         // Check if there is a sheet range eg., Sheet1:Sheet2.
         if (preg_match('/:/', $ext_ref)) {

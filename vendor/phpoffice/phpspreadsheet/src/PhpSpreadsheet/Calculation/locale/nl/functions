@@ -30,7 +30,7 @@ CUBEVALUE		= KUBUSWAARDE			##	Retourneert een samengestelde waarde van een kubus
 DAVERAGE		= DBGEMIDDELDE			##	Berekent de gemiddelde waarde in geselecteerde databasegegevens
 DCOUNT			= DBAANTAL			##	Telt de cellen met getallen in een database
 DCOUNTA			= DBAANTALC			##	Telt de niet-lege cellen in een database
-DGET			= DBLEZEN			##	Retourneertéén record dat voldoet aan de opgegeven criteria uit een database
+DGET			= DBLEZEN			##	Retourneert één record dat voldoet aan de opgegeven criteria uit een database
 DMAX			= DBMAX				##	Retourneert de maximumwaarde in de geselecteerde databasegegevens
 DMIN			= DBMIN				##	Retourneert de minimumwaarde in de geselecteerde databasegegevens
 DPRODUCT		= DBPRODUCT			##	Vermenigvuldigt de waarden in een bepaald veld van de records die voldoen aan de criteria in een database
@@ -155,7 +155,7 @@ PRICEMAT		= PRIJS.VERVALDAG		##	Geeft als resultaat de prijs per € 100 nominal
 PV			= HW				##	Geeft als resultaat de huidige waarde van een investering
 RATE			= RENTE				##	Geeft als resultaat het periodieke rentepercentage voor een annuïteit
 RECEIVED		= OPBRENGST			##	Geeft als resultaat het bedrag dat op de vervaldatum wordt uitgekeerd voor een volgestort waardepapier
-SLN			= LIN.AFSCHR			##	Geeft als resultaat de lineaire afschrijving van activa overéén termijn
+SLN			= LIN.AFSCHR			##	Geeft als resultaat de lineaire afschrijving van activa over één termijn
 SYD			= SYD				##	Geeft als resultaat de afschrijving van activa over een bepaalde termijn met behulp van de 'Sum-Of-Years-Digits'-methode
 TBILLEQ			= SCHATK.OBL			##	Geeft als resultaat het rendement op schatkistpapier, dat op dezelfde manier wordt berekend als het rendement op obligaties
 TBILLPRICE		= SCHATK.PRIJS			##	Bepaalt de prijs per € 100 nominale waarde voor schatkistpapier
@@ -205,7 +205,7 @@ TRUE			= WAAR				##	Geeft als resultaat de logische waarde WAAR
 ##
 ##	Lookup and reference functions			Zoek- en verwijzingsfuncties
 ##
-ADDRESS			= ADRES				##	Geeft als resultaat een verwijzing, in de vorm van tekst, naaréén bepaalde cel in een werkblad
+ADDRESS			= ADRES				##	Geeft als resultaat een verwijzing, in de vorm van tekst, naar één bepaalde cel in een werkblad
 AREAS			= BEREIKEN			##	Geeft als resultaat het aantal bereiken in een verwijzing
 CHOOSE			= KIEZEN			##	Kiest een waarde uit een lijst met waarden
 COLUMN			= KOLOM				##	Geeft als resultaat het kolomnummer van een verwijzing
@@ -385,7 +385,7 @@ BAHTTEXT		= BAHT.TEKST			##	Converteert een getal naar tekst met de valutanotati
 CHAR			= TEKEN				##	Geeft als resultaat het teken dat hoort bij de opgegeven code
 CLEAN			= WISSEN.CONTROL		##	Verwijdert alle niet-afdrukbare tekens uit een tekst
 CODE			= CODE				##	Geeft als resultaat de numerieke code voor het eerste teken in een tekenreeks
-CONCATENATE		= TEKST.SAMENVOEGEN		##	Voegt verschillende tekstfragmenten samen totéén tekstfragment
+CONCATENATE		= TEKST.SAMENVOEGEN		##	Voegt verschillende tekstfragmenten samen tot één tekstfragment
 DOLLAR			= EURO				##	Converteert een getal naar tekst met de valutanotatie € (euro)
 EXACT			= GELIJK			##	Controleert of twee tekenreeksen identiek zijn
 FIND			= VIND.ALLES			##	Zoekt een bepaalde tekenreeks in een tekst (waarbij onderscheid wordt gemaakt tussen hoofdletters en kleine letters)

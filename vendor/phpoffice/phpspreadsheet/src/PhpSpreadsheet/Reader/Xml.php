@@ -89,7 +89,7 @@ class Xml extends BaseReader
         }
 
         //    Retrieve charset encoding
-        if (preg_match('/<?xml.*encoding=['"](.*?)['"].*?>/um', $data, $matches)) {
+        if (preg_match('/<?xml.*encoding=[\'"](.*?)[\'"].*?>/um', $data, $matches)) {
             $this->charSet = strtoupper($matches[1]);
         }
 

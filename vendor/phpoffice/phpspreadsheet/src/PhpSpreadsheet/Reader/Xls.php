@@ -4750,7 +4750,7 @@ class Xls extends BaseReader
                     }
 
                     // construct the path
-                    $url = str_repeat('..', $upLevelCount);
+                    $url = str_repeat('..\\', $upLevelCount);
                     $url .= ($sz > 0) ? $extendedFilePath : $shortenedFilePath; // use extended path if available
                     $url .= $hasText ? '#' : '';
 

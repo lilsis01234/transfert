@@ -223,7 +223,7 @@ class File
         // (fixes bug in windows archive viewer)
         $filename = preg_replace('/^\\/+/', '', $filename);
 
-        return str_replace(['', ':', '*', '?', '"', '<', '>', '|'], '_', $filename);
+        return str_replace(['\\', ':', '*', '?', '"', '<', '>', '|'], '_', $filename);
     }
 
     /**

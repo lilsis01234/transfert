@@ -485,7 +485,7 @@ class ZipStream
 
         if ($this->output_name) {
             // Various different browsers dislike various characters here. Strip them all for safety.
-            $safe_output = trim(str_replace(['"', "'", '', ';', "\n", "\r"], '', $this->output_name));
+            $safe_output = trim(str_replace(['"', "'", '\\', ';', "\n", "\r"], '', $this->output_name));
 
             // Check if we need to UTF-8 encode the filename
             $urlencoded = rawurlencode($safe_output);

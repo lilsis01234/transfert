@@ -50,7 +50,7 @@ class Uri implements UriInterface, \JsonSerializable
      *
      * @see https://tools.ietf.org/html/rfc3986#section-2.2
      */
-    private const CHAR_SUB_DELIMS = '!\$&'\(\)\*\+,;=';
+    private const CHAR_SUB_DELIMS = '!\$&\'\(\)\*\+,;=';
     private const QUERY_SEPARATORS_REPLACEMENT = ['=' => '%3D', '&' => '%26'];
 
     /** @var string Uri scheme. */

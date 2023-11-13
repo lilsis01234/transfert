@@ -631,8 +631,8 @@ class Html extends BaseWriter
     public static function winFileToUrl($filename)
     {
         // Windows filename
-        if (substr($filename, 1, 2) === ':') {
-            $filename = 'file:///' . str_replace('', '/', $filename);
+        if (substr($filename, 1, 2) === ':\\') {
+            $filename = 'file:///' . str_replace('\\', '/', $filename);
         }
 
         return $filename;
@@ -1056,7 +1056,7 @@ class Html extends BaseWriter
         }
 
         $css['color'] = '#' . $pStyle->getColor()->getRGB();
-        $css['font-family'] = ''' . $pStyle->getName() . ''';
+        $css['font-family'] = '\'' . $pStyle->getName() . '\'';
         $css['font-size'] = $pStyle->getSize() . 'pt';
 
         return $css;
@@ -1334,7 +1334,7 @@ class Html extends BaseWriter
 
     private function generateRowCellData($pSheet, $cell, &$cssClass, $cellType)
     {
-        $cellData = '';
+        $cellData = '&nbsp;';
         if ($cell instanceof Cell) {
             $cellData = '';
             // Don't know what this does, and no test cases.
@@ -1344,9 +1344,9 @@ class Html extends BaseWriter
             // Value
             $this->generateRowCellDataValue($pSheet, $cell, $cellData);
 
-            // Converts the cell content so that spaces occuring at beginning of each new line are replaced by 
-            // Example: "  Hello\n to the world" is converted to "Hello\nto the world"
-            $cellData = preg_replace('/(?m)(?:^|\\G) /', '', $cellData);
+            // Converts the cell content so that spaces occuring at beginning of each new line are replaced by &nbsp;
+            // Example: "  Hello\n to the world" is converted to "&nbsp;&nbsp;Hello\n&nbsp;to the world"
+            $cellData = preg_replace('/(?m)(?:^|\\G) /', '&nbsp;', $cellData);
 
             // convert newline "\n" to '<br>'
             $cellData = nl2br($cellData);

@@ -1096,7 +1096,7 @@ class Worksheet extends BIFFwriter
         // Strip URL type and change Unix dir separator to Dos style (if needed)
         //
         $url = preg_replace('/^external:/', '', $url);
-        $url = preg_replace('/\//', '', $url);
+        $url = preg_replace('/\//', '\\', $url);
 
         // Determine if the link is relative or absolute:
         //   relative if link contains no dir separator, "somefile.xls"

@@ -889,7 +889,7 @@ interfaces.
   be retrieved or modified.
 * Added `getDefaultOption()` and `setDefaultOption()` to ClientInterface
 * functions.php functions were renamed using snake_case to match PHP idioms
-* Added support for `HTTP_PROXY`, `HTTsb8_PROXY`, and
+* Added support for `HTTP_PROXY`, `HTTPS_PROXY`, and
   `GUZZLE_CURL_SELECT_TIMEOUT` environment variables
 * Added the ability to specify custom `sendAll()` event priorities
 * Added the ability to specify custom stream context options to the stream

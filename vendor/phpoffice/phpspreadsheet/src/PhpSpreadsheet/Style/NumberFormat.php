@@ -396,7 +396,7 @@ class NumberFormat extends Supervisor
      */
     private static $dateFormatReplacements = [
         // first remove escapes related to non-format characters
-        '' => '',
+        '\\' => '',
         //    12-hour suffix
         'am/pm' => 'A',
         //    4-digit year
@@ -460,7 +460,7 @@ class NumberFormat extends Supervisor
 
     private static function escapeQuotesCallback($matches)
     {
-        return '' . implode('', str_split($matches[1]));
+        return '\\' . implode('\\', str_split($matches[1]));
     }
 
     private static function formatAsDate(&$value, &$format): void

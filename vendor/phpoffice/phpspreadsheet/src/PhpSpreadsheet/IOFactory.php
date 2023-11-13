@@ -97,7 +97,7 @@ abstract class IOFactory
     {
         $reader = self::createReaderForFile($pFilename);
         $className = get_class($reader);
-        $classType = explode('', $className);
+        $classType = explode('\\', $className);
         unset($reader);
 
         return array_pop($classType);

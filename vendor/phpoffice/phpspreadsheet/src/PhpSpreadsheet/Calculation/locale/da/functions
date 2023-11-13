@@ -77,7 +77,7 @@ BIN2DEC			= BIN.TIL.DEC			##	Konverterer et binært tal til et decimaltal
 BIN2HEX			= BIN.TIL.HEX			##	Konverterer et binært tal til et heksadecimalt tal
 BIN2OCT			= BIN.TIL.OKT			##	Konverterer et binært tal til et oktaltal.
 COMPLEX			= KOMPLEKS			##	Konverterer reelle og imaginære koefficienter til et komplekst tal
-CONVERT			= KONVERTER			##	Konverterer et tal fraén måleenhed til en anden
+CONVERT			= KONVERTER			##	Konverterer et tal fra én måleenhed til en anden
 DEC2BIN			= DEC.TIL.BIN			##	Konverterer et decimaltal til et binært tal
 DEC2HEX			= DEC.TIL.HEX			##	Konverterer et decimaltal til et heksadecimalt tal
 DEC2OCT			= DEC.TIL.OKT			##	Konverterer et decimaltal til et oktaltal
@@ -198,7 +198,7 @@ FALSE			= FALSK				##	Returnerer den logiske værdi FALSK
 IF			= HVIS				##	Angiver en logisk test, der skal udføres
 IFERROR			= HVIS.FEJL			##	Returnerer en værdi, du angiver, hvis en formel evauleres som en fejl. Returnerer i modsat fald resultatet af formlen
 NOT			= IKKE				##	Vender argumentets logik om
-OR			= ELLER				##	Returneret værdien SAND, hvis mindstét argument er sandt
+OR			= ELLER				##	Returneret værdien SAND, hvis mindst ét argument er sandt
 TRUE			= SAND				##	Returnerer den logiske værdi SAND
 
 
@@ -385,7 +385,7 @@ BAHTTEXT		= BAHTTEKST			##	Konverterer et tal til tekst ved hjælp af valutaform
 CHAR			= TEGN				##	Returnerer det tegn, der svarer til kodenummeret
 CLEAN			= RENS				##	Fjerner alle tegn, der ikke kan udskrives, fra tekst
 CODE			= KODE				##	Returnerer en numerisk kode for det første tegn i en tekststreng
-CONCATENATE		= SAMMENKÆDNING			##	Sammenkæder adskillige tekstelementer tilét tekstelement
+CONCATENATE		= SAMMENKÆDNING			##	Sammenkæder adskillige tekstelementer til ét tekstelement
 DOLLAR			= KR				##	Konverterer et tal til tekst ved hjælp af valutaformatet kr. (kroner)
 EXACT			= EKSAKT			##	Kontrollerer, om to tekstværdier er identiske
 FIND			= FIND				##	Søger efter en tekstværdi i en anden tekstværdi (der skelnes mellem store og små bogstaver)
